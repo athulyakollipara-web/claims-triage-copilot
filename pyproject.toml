@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "claims-triage-copilot"
+version = "1.0.0"
+description = "Insurance claims triage: XGBoost fraud-risk scoring with SHAP reasons, evidence checks, PII redaction and a LangGraph human-in-the-loop workflow on Amazon Bedrock."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Athulya Kollipara" }]
+dependencies = [
+    "langgraph>=0.4",
+    "boto3>=1.35",
+    "xgboost>=2.0",
+    "shap>=0.45",
+    "scikit-learn>=1.4",
+    "pandas>=2.0,<3",
+    "pyarrow>=14",
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
+]
+
+[project.optional-dependencies]
+spark = ["pyspark>=3.5"]
+eval = ["mlflow>=2.14"]
+infra = ["aws-cdk-lib>=2.150", "constructs>=10"]
+dev = ["pytest>=8", "httpx>=0.27", "moto>=5"]
+
+[project.scripts]
+claims-copilot = "claims_copilot.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["claims_copilot*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["ignore::DeprecationWarning", "ignore::FutureWarning", "ignore::UserWarning"]

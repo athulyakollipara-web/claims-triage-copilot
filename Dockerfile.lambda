@@ -1,0 +1,8 @@
+# AWS mode image for Lambda. Model artifacts and claim files are synced from S3 on cold start.
+FROM public.ecr.aws/lambda/python:3.12
+
+COPY pyproject.toml README.md ${LAMBDA_TASK_ROOT}/
+COPY claims_copilot ${LAMBDA_TASK_ROOT}/claims_copilot
+RUN pip install --no-cache-dir "${LAMBDA_TASK_ROOT}" --target "${LAMBDA_TASK_ROOT}"
+
+CMD ["claims_copilot.lambda_handler.handler"]
